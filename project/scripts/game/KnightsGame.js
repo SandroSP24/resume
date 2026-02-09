@@ -1,6 +1,4 @@
 export default class KnightsGame {
-    // По умолчанию используем координаты из original newGame (canvas.height=576, platform y=511)
-    // 511 / 576 = 0.8871527777777778
     constructor(canvas, screenManager, soundManager, spawnLinePercent = 0.8871527777777778) {
         this.canvas = canvas;
         this.c = canvas.getContext('2d');
@@ -115,9 +113,7 @@ export default class KnightsGame {
         ];
         
         // Создание боссов
-        // Minotaur in original newGame was created with pos.y = 511 and constructor offset applied
         this.minotaur = new Minotaur(this, {x: 0, y: this.groundLevel}, 1);
-        // Bosses should use same vertical offset as enemies: groundLevel - playerSize*3/4
         this.boss = new Boss(this, {x: -this.playerSize, y: this.groundLevel - this.playerSize * 3 / 4}, 1);
         this.bossNoWeapon = new Boss(this, {x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4}, 1);
         this.boss2 = new Boss(this, {x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4}, 1);
