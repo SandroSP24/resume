@@ -1,0 +1,231 @@
+/* ЗАГРУЗКА ШРИФТОВ */
+@font-face {
+    font-family: 'pixel font';
+    src: url('../assets/fonts/pixelcyr_normal.ttf');
+}
+
+/* МЕСТО ДЛЯ ТВОИХ ФОНОВЫХ ИЗОБРАЖЕНИЙ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --------------------- задний фон */
+
+body {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../assets/images/menu-img.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+/* ---------------- фон экрана меню */
+
+.screen {
+    display: none;
+    text-align: center;
+    background: rgba(255,255,255,0.1);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    max-width: 500px;
+}
+
+.screen.active {
+    display: block;
+}
+
+#leaderboardScreen h2 {
+    border-radius: 10px;
+    background-color: #0e580f;
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+#topScore {
+    border-radius: 10px;
+    background-color: #0e580f;
+    font-size: 28px;
+    margin-top: 20px;
+    color: #FFD700; /* золотой цвет для рекорда */
+    font-weight: bold;
+}
+
+/* Стиль для pauseScreen и gameOverScreen */
+.screen.overlay-like {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.screen.overlay-like .overlay-content {
+    background: rgba(255,255,255,0.9);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+
+h1 { 
+    border-radius: 20px;
+    box-shadow: 0 50px 30px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(180deg, #76b07d, #1a610c);
+    font-size: 48px;
+    margin-bottom: 40px;
+    color: white;
+}
+
+h2 { 
+    font-size: 32px; 
+    margin-bottom: 30px; 
+    color: #333; 
+}
+
+button {
+    box-shadow: 0 50px 30px rgba(0, 0, 0, 0.3);
+    display: block;
+    width: 280px;
+    height: 60px;
+    margin: 20px auto;
+    font-size: 20px;
+    background: linear-gradient(45deg, #152915, #18711c);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(200deg, #152915, #18711c);
+    transform: scale(1.05); 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+}
+
+/* ------------------- фон канваса игры */
+
+#gameContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: none;
+}
+
+#gameContainer.active {
+    display: block;
+}
+
+#gameCanvas {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #87CEEB; /* фон игры */
+    z-index: 1;
+}
+
+/* Overlay для паузы и Game Over */
+.overlay {
+    display: none; /* скрыт по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.overlay-content {
+    background: rgba(255,255,255,0.9);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.overlay.active {
+    display: flex;
+}
+
+/* ------------------------ КОНТЕЙНЕР ГРОМКОСТИ */
+
+.slider-container {
+    margin: 30px 0;
+}
+
+.slider-container label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#volumeSlider {
+    width: 250px;
+    height: 8px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+}
+
+.instructions p {
+    font-size: 18px;
+    margin: 15px 0;
+    line-height: 1.5;
+}
+
+/* ---------------------------------- КНОПКА ЗВУКА */
+
+#soundToggle {
+    width: 200px;
+    background: linear-gradient(10deg, #152915, #18711c);
+    margin-top: 10px;
+}
+
+#soundToggle:hover {
+    background: linear-gradient(10deg, #000000, #000000);
+}
+
+/* ------------------------ КОНТЕЙНЕР ЯЗЫКА */
+
+.language-container {
+    margin: 30px 0;
+}
+
+.language-container label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#languageSelect {
+    width: 250px;
+    height: 40px;
+    font-size: 18px;
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    background: white;
+}

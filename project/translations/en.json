@@ -1,0 +1,25 @@
+{
+    "title": "Surrounded but not broken",
+    "play": "▶ Play Game",
+    "settings": "⚙ Settings",
+    "howToPlay": "ℹ How to Play",
+    "back": "← Back",
+    "volume": "Volume",
+    "language": "Language",
+    "instructions": [
+        "• <strong>A/D</strong> — move left/right",
+        "• <strong>SPACE</strong> — jump",
+        "• <strong>E</strong> — attack",
+        "• <strong>F</strong> — block",
+        "• Defeat enemies and survive as long as you can!",
+        "<strong>Fight well!</strong>"
+    ],
+    "pause": "Pause",
+    "resume": "▶ Resume",
+    "menu": "← Main Menu",
+    "gameOver": "Game Over",
+    "restart": "↻ Play Again",
+    "leaderboard": "🏆 Leaderboard",
+    "soundOn": "🔊 Sound",
+    "soundOff": "🔇 Mute"
+}
