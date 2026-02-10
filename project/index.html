@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
+    <link rel="icon"  href="assets/images/icons-game.webp">
+    <title>АРЕНА</title>
     <link rel="stylesheet" href="styles/menu.css">
 </head>
 
@@ -92,13 +92,22 @@
         </div>
     </div>
 
+    <!-- Overlay: Victory Screen (вне gameContainer) -->
+    <div id="victoryOverlay" class="overlay">
+        <div class="overlay-content">
+            <h2>🏆 YOU WIN! 🏆</h2>
+            <button id="restartFromVictoryBtn">↻ Начать заново</button>
+            <button id="menuFromVictoryBtn">← В главное меню</button>
+        </div>
+    </div>
+
     <!-- ФОН ПРИ ЗАГРУЗКЕ -->
     <audio id="natureSound" loop>
         <source src="assets/sounds/menu_audio.mp3" type="audio/mpeg">
     </audio>
     <!-- ЗВУК ИГРЫ -->
     <audio id="gameSound" loop>
-        <source src="assets/sounds/menu_audio.mp3" type="audio/mpeg">
+        <source src="assets/sounds/battle theme.mp3" type="audio/mpeg">
     </audio>
 
     <script type="module" src="scripts/main.js"></script>

@@ -5,7 +5,7 @@ export default class KnightsGame {
         this.screenManager = screenManager;
         this.soundManager = soundManager;
         this.spawnLinePercent = spawnLinePercent;
-        
+
         // Загрузка изображений
         this.background = new Image();
         this.floor = new Image();
@@ -13,14 +13,14 @@ export default class KnightsGame {
         this.playerLeft = new Image();
         this.hp = new Image();
         this.sword = new Image();
-        
+
         this.background.src = "assets/images/background.png";
         this.floor.src = "assets/images/floor.png";
         this.playerRight.src = "assets/images/2right.png";
         this.playerLeft.src = "assets/images/2left.png";
         this.hp.src = "assets/images/health.png";
         this.sword.src = "assets/images/sword.png";
-        
+
         // Переменные состояния игры
         this.paused = true;
         this.skins = ["31"];
@@ -44,92 +44,93 @@ export default class KnightsGame {
         this.playerDiedAnim = false;
         this.maxHealth = 100;
         this.typeMove = "run";
-        
+
         this.defalutE = {
             health: 5,
             damage: 1
         };
-        
+
         this.sprites = {
             right: this.playerRight,
             left: this.playerLeft
         };
-        
+
         this.playerSize = 64 * 5;
         this.playerPosition = {
             x: canvas.width / 2 - this.playerSize / 2,
             y: canvas.height / 2
         };
-        
+
         this.anim = {
             step: 5,
             timer: 0
         };
-        
+
         this.frameWalk = {
             val: 0,
             max: 7
         };
-        
+
         this.frameIdle = {
             val: 0,
             max: 4
         };
-        
+
         this.frameAttack = {
             val: 0,
             max: 2
         };
-        
+
         this.frameJump = {
             val: 0,
             max: 2
         };
-        
+
         this.frameFall = {
             val: 0
         };
-        
+
         this.frameDamage = {
             val: 0,
             max: 5
         };
-        
+
         this.frameDie = {
             val: 0,
             max: 3
         };
-        
+
         this.swordSize = 32;
-        
+
         // Линия спавна (универсальная линия для всех мобов)
         // Процент от высоты холста (по умолчанию соответствует original newGame: 511/576)
         this.groundLevel = Math.floor(this.canvas.height * this.spawnLinePercent);
-        
+
         // Инициализация переменных врагов и боссов
         this.enemies = [
-            new Enemy(this, {x: -this.playerSize, y: this.groundLevel - this.playerSize * 3 / 4}, 1),
-            new Enemy(this, {x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4}, 2)
+            new Enemy(this, { x: -this.playerSize, y: this.groundLevel - this.playerSize * 3 / 4 }, 1),
+            new Enemy(this, { x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4 }, 2)
         ];
-        
+
         // Создание боссов
-        this.minotaur = new Minotaur(this, {x: 0, y: this.groundLevel}, 1);
-        this.boss = new Boss(this, {x: -this.playerSize, y: this.groundLevel - this.playerSize * 3 / 4}, 1);
-        this.bossNoWeapon = new Boss(this, {x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4}, 1);
-        this.boss2 = new Boss(this, {x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4}, 1);
-        this.bossNoWeapon2 = new Boss(this, {x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4}, 1);
-        
+        this.minotaur = new Minotaur(this, { x: 0, y: this.groundLevel }, 1);
+
+        this.boss = new Boss(this, { x: -this.playerSize, y: this.groundLevel - this.playerSize * 3 / 4 }, 1);
+        this.bossNoWeapon = new Boss(this, { x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4 }, 1);
+        this.boss2 = new Boss(this, { x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4 }, 1);
+        this.bossNoWeapon2 = new Boss(this, { x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4 }, 1);
+
         this.boss.set("assets/images/axe", 4, 60, 2, 0.7, 100, 10, 3, 'easy');
         this.boss2.set("assets/images/axe", 4, 60, 2, 0.7, 100, 10, 3, 'easy2');
         this.bossNoWeapon.set("assets/images/no weapon1", 5, 20, 1, 0.8, 200, 10, 10, 'normal', "assets/images/22");
         this.bossNoWeapon.useJumpAtack = true;
         this.bossNoWeapon2.set("assets/images/no weapon1", 5, 20, 2, 0.8, 200, 10, 10, 'normal2', "assets/images/22");
         this.bossNoWeapon2.useJumpAtack = true;
-        
+
         this.actions = {
             'easy': () => {
                 this.paused = true;
-                this.drawWindowParameters.fullString = "Уровень повышен! Скорость увеличена до 4, атака - до 3, здоровье восстановлено.";
+                this.drawWindowParameters.fullString = "Уровень повышен! Скорость увеличена до 4, атака - до 3, здоровье восстановлено. НАЖМИТЕ НА ПРОБЕЛ ЧТОБЫ ПРОДОЛЖИТЬ";
                 this.drawWindowParameters.val = 0;
                 this.drawWindowParameters.index = 0;
                 this.drawWindowParameters.drawn = "";
@@ -140,7 +141,7 @@ export default class KnightsGame {
             },
             'normal': () => {
                 this.paused = true;
-                this.drawWindowParameters.fullString = "Уровень повышен! Атака увеличена до 5, максимальное здоровье увеличено, здоровье восстановлено.";
+                this.drawWindowParameters.fullString = "Уровень повышен! Атака увеличена до 5, максимальное здоровье увеличено, здоровье восстановлено. НАЖМИТЕ НА ПРОБЕЛ ЧТОБЫ ПРОДОЛЖИТЬ";
                 this.drawWindowParameters.val = 0;
                 this.drawWindowParameters.index = 0;
                 this.drawWindowParameters.drawn = "";
@@ -152,7 +153,7 @@ export default class KnightsGame {
             },
             'easy2': () => {
                 this.paused = true;
-                this.drawWindowParameters.fullString = "Уровень повышен! Скорость увеличена до 5, максимальное здоровье увеличено, здоровье восстановлено.";
+                this.drawWindowParameters.fullString = "Уровень повышен! Скорость увеличена до 5, максимальное здоровье увеличено, здоровье восстановлено. НАЖМИТЕ НА ПРОБЕЛ ЧТОБЫ ПРОДОЛЖИТЬ";
                 this.drawWindowParameters.val = 0;
                 this.drawWindowParameters.index = 0;
                 this.drawWindowParameters.drawn = "";
@@ -163,7 +164,7 @@ export default class KnightsGame {
             },
             'normal2': () => {
                 this.paused = true;
-                this.drawWindowParameters.fullString = "Уровень повышен! Атака увеличена до 7, здоровье восстановлено.";
+                this.drawWindowParameters.fullString = "Уровень повышен! Атака увеличена до 7, здоровье восстановлено. НАЖМИТЕ НА ПРОБЕЛ ЧТОБЫ ПРОДОЛЖИТЬ";
                 this.drawWindowParameters.val = 0;
                 this.drawWindowParameters.index = 0;
                 this.drawWindowParameters.drawn = "";
@@ -172,14 +173,14 @@ export default class KnightsGame {
                 this.skins.push("22");
             }
         };
-        
+
         this.bosses = [
-            {obj: this.boss, isSpawned: false, onScore: 10},
-            {obj: this.bossNoWeapon, isSpawned: false, onScore: 20},
-            {obj: this.boss2, isSpawned: false, onScore: 30},
-            {obj: this.bossNoWeapon2, isSpawned: false, onScore: 40}
+            { obj: this.boss, isSpawned: false, onScore: 10 },
+            { obj: this.bossNoWeapon, isSpawned: false, onScore: 20 },
+            { obj: this.boss2, isSpawned: false, onScore: 30 },
+            { obj: this.bossNoWeapon2, isSpawned: false, onScore: 40 }
         ];
-        
+
         this.paddingWindow = 30;
         this.widthBorder = 5;
         this.drawWindowParameters = {
@@ -189,21 +190,21 @@ export default class KnightsGame {
             frequency: 4,
             val: 0
         };
-        
+
         this.countInString = Math.floor((canvas.width * 2 / 3 - 20) / 12);
-        
+
         // Переменные для спавна
         this.spawnIntervals = [];
         this.x1 = 0;
         this.x2 = 0;
         this.audioPlayed = false;
         this.animationFrameId = null;
-        
+
         // Слушатели клавиш
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
     }
-    
+
     handleKeyDown(e) {
         // ESC для паузы
         if (e.key === 'Escape' && !this.playerDied && !this.paused) {
@@ -211,7 +212,13 @@ export default class KnightsGame {
             this.screenManager.showOverlay('pause');
             return;
         }
-        
+
+        // ✅ НОВОЕ: снятие паузы по пробелу после босса
+        if (this.paused && !this.playerDied && e.key === ' ') {
+            this.paused = false;
+            return;
+        }
+
         if (!this.playerDied) {
             switch (e.key.toLowerCase()) {
                 case 'a':
@@ -243,7 +250,7 @@ export default class KnightsGame {
             }
         }
     }
-    
+
     handleKeyUp(e) {
         if (!this.playerDied) {
             switch (e.key.toLowerCase()) {
@@ -264,14 +271,14 @@ export default class KnightsGame {
             }
         }
     }
-    
+
     atackCheck(e) {
         const result = (this.x1 > e.position.x + e.size / 2 - e.realSize / 2 && this.x1 < e.position.x + e.size / 2 + e.realSize / 2) ||
             (this.x2 > e.position.x + e.size / 2 - e.realSize / 2 && this.x2 < e.position.x + e.size / 2 + e.realSize / 2) ||
             (this.x1 < e.position.x + e.size / 2 - e.realSize / 2 && this.x2 > e.position.x + e.size / 2 + e.realSize / 2);
         return result;
     }
-    
+
     drawWindow() {
         const preS = this.c.fillStyle;
         this.c.fillStyle = 'white';
@@ -297,15 +304,15 @@ export default class KnightsGame {
         }
         this.c.fillStyle = preS;
     }
-    
+
     animate = () => {
         this.animationFrameId = requestAnimationFrame(this.animate);
-        
+
         this.c.drawImage(this.background, 0, 0, this.background.width, this.background.height, 0, 0, this.canvas.width, this.canvas.height);
-        
+
         // Рисуем платформу (floor)
         this.c.drawImage(this.floor, 0, 0, this.floor.width, this.floor.height, 0, this.groundLevel, this.canvas.width, this.playerSize * 3 / 4);
-        
+
         if (this.playerDir == 1) {
             this.x1 = this.playerPosition.x + this.playerSize / 2;
             this.x2 = this.playerPosition.x + this.playerSize;
@@ -314,7 +321,7 @@ export default class KnightsGame {
             this.x1 = this.playerPosition.x;
             this.x2 = this.playerPosition.x + this.playerSize / 2;
         }
-        
+
         if (!this.playerDiedAnim && !this.paused) {
             if (this.isMove && !this.isBlock) {
                 this.playerPosition.x += this.playerSpeed * this.playerDir;
@@ -391,7 +398,7 @@ export default class KnightsGame {
                 this.yAnim = 2;
                 this.frameFall.val++;
                 this.playerPosition.y += this.jumpSpeed * 3;
-                
+
                 // Проверяем достиг ли земли или платформы
                 const groundY = this.groundLevel - this.playerSize * 3 / 4;
                 if (this.playerPosition.y >= groundY) {
@@ -408,14 +415,17 @@ export default class KnightsGame {
                 this.anim.timer++;
             }
         }
-        
-        this.enemies.forEach((e, i) => {
+
+        // ✅ БЕЗОПАСНЫЙ ЦИКЛ ДЛЯ УДАЛЕНИЯ ВРАГОВ
+        for (let i = this.enemies.length - 1; i >= 0; i--) {
+            const e = this.enemies[i];
             e.draw();
-            if (this.paused) return;
-            
+
+            if (this.paused) continue;
+
             if (e.name == "minotaur") {
                 if (e.cooldownAtack.val == e.cooldownAtack.max) {
-                    let dmg = e.damage[e.attackIndex];
+                    let dmg = e.damage[e.attackIndex]; // Теперь безопасно!
                     if (!this.isJump && !this.isFall && ((this.isBlock && this.playerDir == e.dir) || (!this.isBlock))) {
                         this.isTakenDamage = true;
                         this.damageDir = e.dir;
@@ -441,7 +451,7 @@ export default class KnightsGame {
                         }
                     });
                 }
-            } else if (!this.paused) {
+            } else {
                 if (e.isAttack && this.playerPosition.y + this.playerSize >= e.position.y + e.size && ((this.isBlock && this.playerDir == e.dir) || (!this.isBlock))) {
                     this.isTakenDamage = true;
                     this.damageDir = e.dir;
@@ -465,7 +475,7 @@ export default class KnightsGame {
                     if (e.name != "enemy") {
                         this.actions[e.name]();
                     }
-                    this.enemies.splice(i, 1);
+                    this.enemies.splice(i, 1); // ✅ Безопасное удаление
                     this.playerScore++;
                     this.defalutE.damage = Math.floor(this.playerScore / 10) + 1;
                     this.defalutE.health = Math.floor(this.playerScore / 10) * 2 + 1;
@@ -475,10 +485,16 @@ export default class KnightsGame {
                             b.isSpawned = true;
                         }
                     });
+                    // ✅ ПРОВЕРКА ПОБЕДЫ
+                    const allBossesSpawned = this.bosses.every(boss => boss.isSpawned);
+                    const noBossesAlive = this.bosses.every(boss => !this.enemies.includes(boss.obj));
+                    if (allBossesSpawned && noBossesAlive) {
+                        this.handleVictory();
+                    }
                 }
             }
-        });
-        
+        }
+
         if (!this.playerDiedAnim) {
             if (this.isTakenDamage && !this.playerDied) {
                 this.frameAttack.val = 0;
@@ -495,7 +511,7 @@ export default class KnightsGame {
                 if (this.playerPosition.x > this.canvas.width - this.playerSize) this.playerPosition.x = this.canvas.width - this.playerSize;
             }
         }
-        
+
         if (this.playerDied && !this.playerDiedAnim) {
             if (this.frameDie.val > this.frameDie.max) {
                 this.playerDiedAnim = true;
@@ -504,6 +520,8 @@ export default class KnightsGame {
                 if (this.playerScore > topScore) {
                     localStorage.setItem('topScore', this.playerScore);
                 }
+                // ✅ Останавливаем музыку игры
+                this.soundManager.pause('game');
                 // Показываем Game Over
                 if (this.animationFrameId) {
                     cancelAnimationFrame(this.animationFrameId);
@@ -517,12 +535,12 @@ export default class KnightsGame {
             this.yAnim = 3;
             this.anim.timer++;
         }
-        
+
         if (this.playerDiedAnim) {
             this.xAnim = 4;
             this.yAnim = 3;
         }
-        
+
         if (this.playerDir == 1) {
             this.c.drawImage(this.sprites.right, this.xAnim * this.playerSize, this.yAnim * this.playerSize, this.playerSize, this.playerSize,
                 this.playerPosition.x, this.playerPosition.y, this.playerSize, this.playerSize);
@@ -531,84 +549,87 @@ export default class KnightsGame {
             this.c.drawImage(this.sprites.left, (6 - this.xAnim) * this.playerSize, this.yAnim * this.playerSize, this.playerSize, this.playerSize,
                 this.playerPosition.x, this.playerPosition.y, this.playerSize, this.playerSize);
         }
-        
+
         // UI
         this.c.drawImage(this.hp, 0, 0, 1, 1, 10, 10, this.maxHealth * this.canvas.width / 500 * this.maxHealth / 100, this.hp.height * 3);
         if (this.playerHealth > 0)
             this.c.drawImage(this.hp, 0, 0, this.hp.width, this.hp.height, 10, 10, this.playerHealth * this.canvas.width / 500 * this.maxHealth / 100, this.hp.height * 3);
-        
+
         this.c.font = "bold 30px pixel font";
         this.c.fillText(this.playerScore.toString(), 10, this.hp.height * 3 + 40);
-        this.c.drawImage(this.sword, 0, 0, this.sword.width, this.sword.height, 10, 60 + this.hp.height * 3, this.swordSize, this.swordSize);
-        
+        // Рисуем меч только если он загружен
+        if (this.sword.complete && this.sword.naturalWidth !== 0) {
+            this.c.drawImage(this.sword, 0, 0, this.sword.width, this.sword.height, 10, 60 + this.hp.height * 3, this.swordSize, this.swordSize);
+        }
+
         this.c.font = "25px pixel font";
         this.c.fillText("атака: " + this.playerDamage.toString(), 20 + this.swordSize, 85 + this.hp.height * 3);
         this.c.fillText("скорость: " + this.playerSpeed.toString(), 10, 130 + this.hp.height * 3);
         this.c.fillText("max hp: " + this.maxHealth.toString(), 10, 175 + this.hp.height * 3);
-        
+
         if (this.paused) {
             this.drawWindow();
         }
     }
-    
+
     start() {
         this.audioPlayed = false;
         // Start standing on the ground (prevent initial tiny jump)
         this.isJump = false;
         this.jumpHeight = 0;
-        
+
         // Ставим игрока на землю (выравниваем с мобами)
         this.playerPosition.y = this.groundLevel - this.playerSize * 3 / 4;
-        
+
         // Сразу начинаем без паузы
         this.paused = false;
-        
+
         window.addEventListener("keydown", this.handleKeyDown);
         window.addEventListener("keyup", this.handleKeyUp);
-        
+
         // Спавн врагов
         this.spawnIntervals.push(
             setInterval(() => {
                 if (!this.paused)
-                    this.enemies.push(new Enemy(this, {x: -this.playerSize, y: this.groundLevel - this.playerSize * 3 / 4}, 1));
+                    this.enemies.push(new Enemy(this, { x: -this.playerSize, y: this.groundLevel - this.playerSize * 3 / 4 }, 1));
             }, 3000)  // ускорено для теста
         );
-        
+
         this.spawnIntervals.push(
             setInterval(() => {
                 if (!this.paused)
-                    this.enemies.push(new Enemy(this, {x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4}, 1));
+                    this.enemies.push(new Enemy(this, { x: this.canvas.width, y: this.groundLevel - this.playerSize * 3 / 4 }, 1));
             }, 2000)  // ускорено для теста
         );
-        
+
         this.spawnIntervals.push(
             setInterval(() => {
                 if (!this.paused)
-                    this.enemies.push(new Enemy(this, {x: -this.playerSize, y: this.groundLevel - this.playerSize * 3 / 4}, 2));
+                    this.enemies.push(new Enemy(this, { x: -this.playerSize, y: this.groundLevel - this.playerSize * 3 / 4 }, 2));
             }, 8000)  // ускорено для теста
         );
-        
+
         this.spawnIntervals.push(
             setInterval(() => {
                 if (!this.paused)
-                    this.enemies.push(new Minotaur(this, {x: -400, y: this.groundLevel}, 1));
+                    this.enemies.push(new Minotaur(this, { x: -400, y: this.groundLevel }, 1));
             }, 15000)  // ускорено для теста
         );
-        
+
         this.spawnIntervals.push(
             setInterval(() => {
                 if (!this.paused)
-                    this.enemies.push(new Minotaur(this, {x: -400, y: this.groundLevel}, 2));
+                    this.enemies.push(new Minotaur(this, { x: -400, y: this.groundLevel }, 2));
             }, 45000)  // ускорено для теста
         );
-        
+
         this.spawnIntervals.push(
             setInterval(() => {
                 if (!this.paused)
-                    this.enemies.push(new Minotaur(this, {x: this.canvas.width, y: this.groundLevel}, 1));
+                    this.enemies.push(new Minotaur(this, { x: this.canvas.width, y: this.groundLevel }, 1));
             }, 20000)  // ускорено для теста
         );
-        
+
         this.animate();
     }
 
@@ -629,24 +650,45 @@ export default class KnightsGame {
             });
         }
     }
-    
+
+    handleVictory() {
+        // Сохраняем рекорд
+        const topScore = localStorage.getItem('topScore') || 0;
+        if (this.playerScore > topScore) {
+            localStorage.setItem('topScore', this.playerScore);
+        }
+
+        // ✅ Останавливаем музыку игры перед показом победы
+        this.soundManager.pause('game');
+
+        // Останавливаем игру
+        this.paused = true;
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+        }
+        this.stop();
+
+        // Показываем экран победы
+        this.screenManager.show('victory');
+    }
+
     stop() {
         window.removeEventListener("keydown", this.handleKeyDown);
         window.removeEventListener("keyup", this.handleKeyUp);
-        
+
         if (this.animationFrameId) {
             cancelAnimationFrame(this.animationFrameId);
             this.animationFrameId = null;
         }
-        
+
         this.spawnIntervals.forEach(interval => clearInterval(interval));
         this.spawnIntervals = [];
     }
-    
+
     resume() {
         this.paused = false;
     }
-    
+
     pause() {
         this.paused = true;
     }
@@ -720,7 +762,7 @@ class Enemy {
             this.speed++;
         }
     }
-    
+
     move() {
         if (!this.died) {
             if (this.position.x > this.game.playerPosition.x + this.game.playerSize / 3 && !this.isAttack && !this.isTakenDamage && !this.isShield) {
@@ -741,7 +783,7 @@ class Enemy {
             }
         }
     }
-    
+
     draw() {
         if (!this.game.playerDied && !this.game.paused) {
             this.near = !(this.position.x > this.game.playerPosition.x + this.game.playerSize / 2 - 5 || this.position.x + this.game.playerSize / 2 - 5 < this.game.playerPosition.x);
@@ -809,14 +851,19 @@ class Enemy {
             this.yAnim = 0;
             this.anim.timer++;
         }
-        
+
+        // ✅ ПРОВЕРКА ЗАГРУЗКИ ИЗОБРАЖЕНИЙ ПЕРЕД ОТРИСОВКОЙ
         if (this.dir == -1) {
-            this.game.c.drawImage(this.sprites.left, (6 - this.xAnim) * this.size, this.yAnim * this.size, this.size, this.size,
-                this.position.x, this.position.y, this.size, this.size);
+            if (this.imageLeft.complete && this.imageLeft.naturalWidth !== 0) {
+                this.game.c.drawImage(this.sprites.left, (6 - this.xAnim) * this.size, this.yAnim * this.size, this.size, this.size,
+                    this.position.x, this.position.y, this.size, this.size);
+            }
         }
         if (this.dir == 1) {
-            this.game.c.drawImage(this.sprites.right, this.xAnim * this.size, this.yAnim * this.size, this.size, this.size,
-                this.position.x, this.position.y, this.size, this.size);
+            if (this.imageRight.complete && this.imageRight.naturalWidth !== 0) {
+                this.game.c.drawImage(this.sprites.right, this.xAnim * this.size, this.yAnim * this.size, this.size, this.size,
+                    this.position.x, this.position.y, this.size, this.size);
+            }
         }
     }
 }
@@ -826,8 +873,8 @@ class Boss extends Enemy {
         this.name = name;
         this.speed = newSpeed;
         this.skin = newSkin;
-        this.imageLeft.src = this.skin + "left.png";
-        this.imageRight.src = this.skin + "right.png";
+        this.imageLeft.src = this.skin + "left.png";  // ✅ СО СЛЕШЕМ
+        this.imageRight.src = this.skin + "right.png"; // ✅ СО СЛЕШЕМ
         this.cooldownAtack = {
             val: 30,
             max: cooldownmMax
@@ -864,7 +911,7 @@ class Boss extends Enemy {
             max: 50
         };
     }
-    
+
     draw() {
         if (this.health < this.maxHealth / 2 && (Math.random() < 0.2) && !this.isExtraAtack && this.cooldownExtraAtack.val == 0) {
             this.isExtraAtack = true;
@@ -884,6 +931,13 @@ class Boss extends Enemy {
             this.speed = this.defaultSpeed;
         }
         super.draw();
+
+        // ✅ ПРОВЕРКА ЗАГРУЗКИ ИЗОБРАЖЕНИЯ ЗДОРОВЬЯ
+        if (this.game.hp.complete && this.game.hp.naturalWidth !== 0) {
+            this.game.c.drawImage(this.game.hp, 0, 0, 1, 1, this.position.x + this.size / 3, this.position.y + this.size / 6, this.maxHealth * this.kfDraw, 15);
+            this.game.c.drawImage(this.game.hp, 0, 0, this.game.hp.width, this.game.hp.height, this.position.x + this.size / 3, this.position.y + this.size / 6, this.health * this.kfDraw, 15);
+        }
+
         this.game.c.drawImage(this.game.hp, 0, 0, 1, 1, this.position.x + this.size / 3, this.position.y + this.size / 6, this.maxHealth * this.kfDraw, 15);
         this.game.c.drawImage(this.game.hp, 0, 0, this.game.hp.width, this.game.hp.height, this.position.x + this.size / 3, this.position.y + this.size / 6, this.health * this.kfDraw, 15);
     }
@@ -901,46 +955,53 @@ class Minotaur {
         this.size = 384;
         this.position.y -= this.size * 2 / 3;
         this.speed = speed;
-        this.damage = {3: 10 * game.defalutE.damage, 4: 5 * game.defalutE.damage, 6: 15 * game.defalutE.damage};
+
+        // ✅ ФИКСИРОВАННЫЙ УРОН БЕЗ ЗАВИСИМОСТИ ОТ ГЛОБАЛЬНОГО МНОЖИТЕЛЯ
+        this.damage = {
+            3: 12,  // средняя атака
+            4: 8,   // слабая атака
+            6: 20   // сильная атака (максимум 20 урона)
+        };
+
         this.takeDamage = {
             v: 0,
             max: 20
         };
         this.keyframes = [
-            {is: true, vx: 0, max: 3, anim: {step: 5, timer: 0}},
-            {is: false, vx: 0, max: 6, anim: {step: 4, timer: 0}},
-            {is: false, vx: 0, max: 3, anim: {step: 5, timer: 0}},
-            {is: false, vx: 0, max: 7, anim: {step: 5, timer: 0}},
-            {is: false, vx: 0, max: 3, anim: {step: 6, timer: 0}},
-            {is: false, vx: 0, max: 4, anim: {step: 6, timer: 0}},
-            {is: false, vx: 0, max: 7, anim: {step: 6, timer: 0}},
-            {is: false, vx: 0, max: 1, anim: {step: 10, timer: 0}},
-            {is: false, vx: 0, max: 1, anim: {step: 10, timer: 0}},
-            {is: false, vx: 0, max: 5, anim: {step: 10, timer: 0}}
+            { is: true, vx: 0, max: 3, anim: { step: 5, timer: 0 } },
+            { is: false, vx: 0, max: 6, anim: { step: 4, timer: 0 } },
+            { is: false, vx: 0, max: 3, anim: { step: 5, timer: 0 } },
+            { is: false, vx: 0, max: 7, anim: { step: 5, timer: 0 } },
+            { is: false, vx: 0, max: 3, anim: { step: 6, timer: 0 } },
+            { is: false, vx: 0, max: 4, anim: { step: 6, timer: 0 } },
+            { is: false, vx: 0, max: 7, anim: { step: 6, timer: 0 } },
+            { is: false, vx: 0, max: 1, anim: { step: 10, timer: 0 } },
+            { is: false, vx: 0, max: 1, anim: { step: 10, timer: 0 } },
+            { is: false, vx: 0, max: 5, anim: { step: 10, timer: 0 } }
         ];
         this.frames = {
-            idle: {value: 0},
-            run: {value: 1},
-            taunt: {value: 2},
-            atack: {value: [3, 4, 6]},
-            atackWtf: {value: 5},
-            damage: {value: [7, 8]},
-            die: {value: 9}
+            idle: { value: 0 },
+            run: { value: 1 },
+            taunt: { value: 2 },
+            atack: { value: [3, 4, 6] },
+            atackWtf: { value: 5 },
+            damage: { value: [7, 8] },
+            die: { value: 9 }
         };
         this.cooldownAtack = {
             val: 30,
             max: 200
         };
         this.damageDir = 0;
-        this.health = game.defalutE.health * 15;
+        this.health = 150; // ✅ ФИКСИРОВАННОЕ ЗДОРОВЬЕ (не зависит от defalutE.health)
         this.died = false;
         this.chanceDodge = 0.4;
         this.cooldownStay = {
             v: 10,
             max: 100
         };
+        this.attackIndex = 6; // ✅ Инициализация по умолчанию
     }
-    
     update() {
         this.keyframes[0].is = true;
         if (this.takeDamage.v == 0) {
@@ -980,7 +1041,6 @@ class Minotaur {
             }
         }
     }
-    
     draw() {
         if (this.health > 0 && !this.game.paused)
             this.update();

@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const pauseOverlay = document.getElementById('pauseOverlay');
     const gameOverOverlay = document.getElementById('gameOverOverlay');
 
+    // --- overlay victory ---
+    const victoryOverlay = document.getElementById('victoryOverlay');
+
     // --- кнопки ---
     const playBtn = document.getElementById('playBtn');
     const settingsBtn = document.getElementById('settingsBtn');
@@ -47,6 +50,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const menuFromPauseBtn = document.getElementById('menuFromPauseBtn');
     const restartBtn = document.getElementById('restartBtn');
     const menuFromGameOverBtn = document.getElementById('menuFromGameOverBtn');
+
+    const restartFromVictoryBtn = document.getElementById('restartFromVictoryBtn');
+    const menuFromVictoryBtn = document.getElementById('menuFromVictoryBtn');
 
     const backBtns = document.querySelectorAll('#backBtn, #backBtn2');
 
@@ -104,6 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         screenManager.register('game', gameContainer);
         screenManager.register('pause', pauseOverlay);
         screenManager.register('gameOver', gameOverOverlay);
+        screenManager.register('victory', victoryOverlay);
 
         screenManager.show('main');
     } else {
@@ -120,6 +127,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function showGameOver() {
         screenManager.show('gameOver');
+    }
+
+    function showVictory() {
+        screenManager.show('victory');
     }
 
 
@@ -202,6 +213,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             gameInstance.stop();
             screenManager.show('main'); // главное меню
             gameStarted = false;         // останавливаем игру
+            soundManager.pause('game');
+            soundManager.play('nature');
         });
     }
 
@@ -212,6 +225,39 @@ document.addEventListener('DOMContentLoaded', async () => {
             gameInstance.stop();
             screenManager.show('main'); // главное меню
             gameStarted = false;         // останавливаем игру
+            soundManager.pause('game');
+            soundManager.play('nature');
+        });
+    }
+
+    // --- overlay: victory ---
+    if (restartFromVictoryBtn) {
+        restartFromVictoryBtn.addEventListener('click', () => {
+            screenManager.hideOverlay('victory');
+            // Подгоняем canvas к окну
+            gameCanvas.width = window.innerWidth;
+            gameCanvas.height = window.innerHeight;
+            // Создаём новую игру
+            gameInstance = new KnightsGame(gameCanvas, screenManager, soundManager);
+            // Показываем игровой экран и запускаем
+            screenManager.show('game');
+            gameInstance.start();
+            // ✅ Запускаем музыку битвы
+            soundManager.pause('nature');
+            soundManager.play('game');
+        });
+    }
+
+    // В главное меню из победы
+    if (menuFromVictoryBtn) {
+        menuFromVictoryBtn.addEventListener('click', () => {
+            screenManager.hideOverlay('victory');
+            gameInstance.stop();
+            screenManager.show('main');
+            gameStarted = false;
+            // Возвращаем звук меню
+            soundManager.pause('game');
+            soundManager.play('nature');
         });
     }
 
@@ -227,6 +273,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Показываем игровой экран и запускаем
             screenManager.show('game');
             gameInstance.start(); // теперь полностью сбрасываем игру
+            soundManager.pause('nature');
+            soundManager.play('game');
         });
     }
 
@@ -358,6 +406,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('#gameOverOverlay h2').textContent = translations.gameOver;
         document.getElementById('restartBtn').textContent = translations.restart;
         document.getElementById('menuFromGameOverBtn').textContent = translations.menu;
+
+        // overlay victory
+        if (victoryOverlay) {
+            document.querySelector('#victoryOverlay h2').textContent = translations.victory || '🏆 YOU WIN! 🏆';
+            if (restartFromVictoryBtn) restartFromVictoryBtn.textContent = translations.restart || '↻ Начать заново';
+            if (menuFromVictoryBtn) menuFromVictoryBtn.textContent = translations.menu || '← В главное меню';
+        }
     }
 
     // ОБРАБОТЧИК ВЫБОРА ЯЗЫКА
